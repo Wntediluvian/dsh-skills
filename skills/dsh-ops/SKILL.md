@@ -1,15 +1,15 @@
 ---
-name: dsh-troubleshoot
+name: dsh-ops
 description: >
-  dsh（DeepSeek Harness）故障排查与运维技能。处理 dsh 无法启动、端口异常、
+  dsh（DeepSeek Harness）运维与故障排查技能。处理 dsh 无法启动、端口异常、
   插件加载失败、npm 发布异常、备份异常、进程管理、隐私保护等问题时加载本
   技能。触发词：排查问题、启动失败、3080 无法启动、dsh 报错、插件加载失败、
-  npm 发布失败、备份异常、重启 dsh、dsh-troubleshoot。
+  npm 发布失败、备份异常、重启 dsh、dsh-ops。
 ---
 
-# dsh 故障排查（dsh-troubleshoot）
+# dsh 运维（dsh-ops）
 
-dsh 故障排查的**快速入口**。通用版故障档案：本目录下 `故障处理经验库.md`
+dsh 运维与故障排查的**快速入口**。通用版故障档案：本目录下 `故障处理经验库.md`
 （脱敏公开版，随仓库分发）。本机完整经验库（含个人路径）仅保存在本地。
 
 处理任何 dsh 相关故障时：先看铁律 → 对照定位表 → 执行检查清单 → 必要时读完整档案。

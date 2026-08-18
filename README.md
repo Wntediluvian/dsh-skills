@@ -6,7 +6,7 @@
 
 | 技能 | 说明 | 触发词 |
 |---|---|---|
-| [dsh-troubleshoot](./skills/dsh-troubleshoot) | dsh 故障排查与运维：启动失败、插件加载、npm 发布异常、备份异常 | 排查问题、启动失败、3080 报错、插件加载失败、备份异常 |
+| [dsh-ops](./skills/dsh-ops) | dsh 运维与故障排查：启动失败、插件加载、npm 发布异常、备份异常 | 排查问题、启动失败、3080 报错、插件加载失败、备份异常 |
 | [dsh-release](./skills/dsh-release) | 插件发布流程：版本检查、代码/内容/隐私/安全检查、发布顺序 | 发布插件、发布流程、npm publish、怎么发布 |
 
 ## 安装
@@ -18,7 +18,7 @@ git clone https://github.com/Wntediluvian/dsh-skills.git
 # 复制全部技能
 cp -r dsh-skills/skills/* $DSH_HOME/skills/
 # 或按需复制单个技能
-cp -r dsh-skills/skills/dsh-troubleshoot $DSH_HOME/skills/
+cp -r dsh-skills/skills/dsh-ops $DSH_HOME/skills/
 ```
 
 Windows PowerShell：
@@ -39,7 +39,7 @@ Copy-Item skills/* -Destination $env:DSH_HOME/skills/ -Recurse -Force
 
 ## 内容说明
 
-- `skills/dsh-troubleshoot/`：故障排查经验（SKILL.md 为快速入口；`故障处理经验库.md` 为通用脱敏版档案，不含任何本机路径）
+- `skills/dsh-ops/`：运维与故障排查经验（SKILL.md 为快速入口；`故障处理经验库.md` 为通用脱敏版档案，不含任何本机路径）
 - `skills/dsh-release/`：发布流程手册（SKILL.md 为快速入口；`发布流程手册.md` 为完整版）
 
 ## 隐私声明
