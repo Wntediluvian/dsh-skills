@@ -57,6 +57,7 @@ dsh 运维与故障排查的**快速入口**。通用版故障档案：本目录
 - **必须导出** `exports.apply(ctx)`；`exports.inject = ['slots']` 用**顶层**声明（scoped 不生效）
 - 取 React：`require('react')`（不是 `window.React`）
 - `__ModuleLoader__.load({ id: '<完整包名>' })` —— id 必须 = npm 包名
+- **settings 卡片 slots.register 的 hooks key 不能带 `use` 前缀**：dsh 框架自动从 `dshDock` 铸出 `props.useDshDock`。写 `hooks: { useDshDock: store }` 会拿到原始 store（报 `props.useDshDock is not a function`）。参照原版 dsh-restart：`hooks: { dshRestart: store }` → `props.useDshRestart`
 
 ### 通用
 - 时间戳目录名无冒号（Windows 禁止）；`new Date('无冒号串')` 是 Invalid Date → 加 `isNaN` 容错
