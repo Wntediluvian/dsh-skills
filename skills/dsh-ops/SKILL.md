@@ -21,6 +21,7 @@ dsh 运维与故障排查的**快速入口**。通用版故障档案：本目录
 3. **npm 发布后 404 是延迟不是失败**：发布命令 exit=0 即成功。用"重复发布报 403 已存在"或 jsDelivr（`https://cdn.jsdelivr.net/npm/<包名>@<版本>/package.json` HTTP 200）验证，不要用 `npm view` 立即判断。
 4. **作用域包发布必须** `npm publish --access public`（否则 E402 private packages）。
 5. **隐私保护（重要）**：本机路径、用户名、token、API key、数据目录结构**绝不写入**要发布到公开仓库的文件。含个人信息的经验库只存本地。发布前必须扫描：盘符路径、用户目录、用户名、`ghp_`/`npm_` token、数据目录等。
+6. **改 node_modules 的脚本必须字节安全**：PS 5.1 的 `Get-Content`/`Set-Content` 按 ANSI 处理会破坏 UTF-8 中文。一律用 `[System.IO.File]::ReadAllText/WriteAllText`（UTF8 无 BOM），.ps1 脚本本身存 **UTF-8 带 BOM**。补丁脚本参考 `运维\插件补丁\reapply-patches.ps1`。
 
 ## 故障快速定位表
 
@@ -37,6 +38,7 @@ dsh 运维与故障排查的**快速入口**。通用版故障档案：本目录
 | 插件配置页卡片不显示（改 key 也没用）| 没注册 **settings namespace**（页只渲染有 namespace 的插件）| 服务端 `installSettingsSection(ctx, settingsNamespace('<名>'), z.object({}), ...)` |
 | PowerShell 窗口反复弹出 | dsh 进程**无控制台**（detached 拉起）→ 子进程各自弹窗 | 用 `spawn(..., { detached:true, windowsHide:true })` 重启；**勿用 powershell 包装**（会重启失败）|
 | 重启按钮触发后拉不起来 | 重启命令失败（如 powershell 包装）| 回退 `detached + windowsHide`；查 `%TEMP%/dsh-restart-*.log` |
+| 插件市场更新后功能丢失/报错 | 一键更新 = `pnpm add @latest` **重装整个包目录**，node_modules 手动补丁全被覆盖 | 更新后跑 `运维\插件补丁\reapply-patches.ps1` 重打补丁（幂等）；自持插件用 `file:`/`github:` 安装可永久免疫 |
 
 ## 手动命令
 
