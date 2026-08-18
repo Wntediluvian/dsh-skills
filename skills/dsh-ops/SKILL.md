@@ -33,7 +33,10 @@ dsh 运维与故障排查的**快速入口**。通用版故障档案：本目录
 | `npm publish` EOTP | 需要一次性验证码 | `--otp=<动态码>`（问用户要，不是 PIN） |
 | 发布后 `npm view` 404 | CDN 传播延迟 | 重复发布报 403 = 已成功，或用 jsDelivr 验证 |
 | 备份 `plugins.files=0` | 增量备份文件未变化（正常） | 骨架目录仍建立；全量才复制全部 |
-| git push `schannel: SSL/TLS connection failed` | VPN/代理与 schannel 冲突 | 配代理：`git config --global http.proxy http://127.0.0.1:7897` |
+| git push `schannel: SSL/TLS connection failed` | VPN/代理与 schannel 冲突 | 配代理：`git config --global http.proxy <代理端口>` |
+| 插件配置页卡片不显示（改 key 也没用）| 没注册 **settings namespace**（页只渲染有 namespace 的插件）| 服务端 `installSettingsSection(ctx, settingsNamespace('<名>'), z.object({}), ...)` |
+| PowerShell 窗口反复弹出 | dsh 进程**无控制台**（detached 拉起）→ 子进程各自弹窗 | 用 `spawn(..., { detached:true, windowsHide:true })` 重启；**勿用 powershell 包装**（会重启失败）|
+| 重启按钮触发后拉不起来 | 重启命令失败（如 powershell 包装）| 回退 `detached + windowsHide`；查 `%TEMP%/dsh-restart-*.log` |
 
 ## 手动命令
 
