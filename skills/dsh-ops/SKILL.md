@@ -41,6 +41,11 @@ dsh 运维与故障排查的**快速入口**。通用版故障档案：本目录
 | 插件市场更新后功能丢失/报错 | 一键更新 = `pnpm add @latest` **重装整个包目录**，node_modules 手动补丁全被覆盖 | 更新后跑 `运维\插件补丁\reapply-patches.ps1` 重打补丁（幂等）；自持插件用 `file:`/`github:` 安装可永久免疫 |
 | 3080 启动失败 `Failed to load plugins` / `bundle script ... failed to load` | `pnpm install` 清空了不在 dependencies 里的 `@deepseek-ai/*` 官方 bundle | package.json dependencies 补 `@deepseek-ai/dsh-base` + `dsh-web-app`（^0.1.0-rc.7）→ `pnpm install --no-frozen-lockfile` 重装 → 跑 reapply-patches.ps1 |
 | 启动报 `keyed slot "settings.plugin.item" requires options.key`（具体插件名） | 该插件 client.js 用 `id` 注册 keyed slot（应为 `key`）| 改 `id:` → `key:`；已在 modlens/aqua/dsh-restart/dsh-backup 遇到，`reapply-patches.ps1` 已覆盖 modlens+aqua |
+| 模型选择器锁死，只能选 `(modlens vision)` 变体 | **会话里有图片附件** → dsh 规则禁止切纯文本模型（不是 bug）| 开新会话即解锁；视觉插件二选一（modlens/vision-router 会抢路由）|
+| `dsh plugin update/add @latest` 后版本没变 | **pnpm 24h 发布冷静期**（minimumReleaseAge）拦了新版本 | 加 `--config.minimumReleaseAge=0` 绕过 |
+| 响应整体变慢 | ①会话过长（>1000 步/10 万 token 上下文）②vision-router stealth 接管 deepseek 路由 ③modlens 变体包装层 | 开新会话；`vision-router` 设 `stealth: false` 或卸载；默认模型用 `deepseek-official` 而非 `deepseek-modlens` |
+| settings 卡片报 `props.useXxx is not a function` | hooks key **带了 `use` 前缀**（dsh 自动从 `xxx` 铸 `useXxx`）| hooks key 用 `dshDock` 而非 `useDshDock` |
+| npm 发布后 pnpm 装不上（404）| dist-tags 为空 / CDN 延迟 | `npm dist-tag add <pkg>@<ver> latest`；或重复 publish 报 403 验证 |
 
 ## 手动命令
 
