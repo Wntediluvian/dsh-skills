@@ -73,6 +73,15 @@ description: >
 | `schannel: SSL/TLS connection failed` | 配代理 `git config --global http.proxy http://127.0.0.1:7897` |
 | github.com 直连失败 | 走代理或切换 VPN 模式 |
 
+## 技能自动更新（重要机制）
+
+**触发更新时机**（用户说"更新 skills"或以下任一情况，应立即更新本技能 + 发布手册 + 仓库）：
+1. 发布流程有任何变化/踩新坑后
+2. 版本规则、npm 政策、网络配置变化后
+3. 用户明确说"更新 skills"
+
+**更新流程**：本机发布手册（本地完整版）→ 本机技能 → 仓库脱敏版（`git/dsh-skills`）→ git 提交推送。
+
 ## 口诀
 
 > 版本要对、语法要过、三层要齐、文档要新、隐私要扫、安全要查、先推 git、再发 npm、延迟别慌、jsDelivr 验证。

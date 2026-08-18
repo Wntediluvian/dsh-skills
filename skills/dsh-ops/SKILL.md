@@ -39,6 +39,33 @@ dsh 运维与故障排查的**快速入口**。通用版故障档案：本目录
 
 本技能无独立斜杠命令；直接说"排查问题"、"启动失败"、"dsh 报错"即可触发。
 
+## 开发契约速查（插件开发易错点）
+
+### 服务端（lib/index.js）
+- 取 webServer：`ctx.inject(['webServer'], (scope) => { scope.webServer ... })`（直接 `ctx.webServer` 抛错）
+- 函数定义必须在引擎闭包内；暴露用 `engine.xxx`
+- 变量名避免与函数名相同（TDZ 遮蔽）
+
+### 客户端（lib/client.js）
+- **必须导出** `exports.apply(ctx)`；`exports.inject = ['slots']` 用**顶层**声明（scoped 不生效）
+- 取 React：`require('react')`（不是 `window.React`）
+- `__ModuleLoader__.load({ id: '<完整包名>' })` —— id 必须 = npm 包名
+
+### 通用
+- 时间戳目录名无冒号（Windows 禁止）；`new Date('无冒号串')` 是 Invalid Date → 加 `isNaN` 容错
+- bat 脚本用英文注释 + GBK 编码（中文 rem 会让 cmd 崩溃）
+- 写中文文件用 write 工具（PowerShell Set-Content 会 GBK 乱码）
+
+## 技能自动更新（重要机制）
+
+**触发更新时机**（用户说"更新 skills"或以下任一情况，应立即更新本技能 + 经验库 + 仓库）：
+1. 处理完任何重大事故/新报错后
+2. 学到新的开发契约/环境坑后
+3. 发布流程有变化后
+4. 用户明确说"更新 skills"
+
+**更新流程**：本机经验库（本地完整版）→ 本机技能 → 仓库脱敏版（`git/dsh-skills`）→ git 提交推送。
+
 ## 改动 dsh 插件后的必做清单
 
 - [ ] 全局搜索旧包名（grep 插件目录，含 .yml 和 .js）
