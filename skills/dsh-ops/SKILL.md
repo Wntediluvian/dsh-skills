@@ -46,6 +46,7 @@ dsh 运维与故障排查的**快速入口**。通用版故障档案：本目录
 | 响应整体变慢 | ①会话过长（>1000 步/10 万 token 上下文）②vision-router stealth 接管 deepseek 路由 ③modlens 变体包装层 | 开新会话；`vision-router` 设 `stealth: false` 或卸载；默认模型用 `deepseek-official` 而非 `deepseek-modlens` |
 | settings 卡片报 `props.useXxx is not a function` | hooks key **带了 `use` 前缀**（dsh 自动从 `xxx` 铸 `useXxx`）| hooks key 用 `dshDock` 而非 `useDshDock` |
 | npm 发布后 pnpm 装不上（404）| dist-tags 为空 / CDN 延迟 | `npm dist-tag add <pkg>@<ver> latest`；或重复 publish 报 403 验证 |
+| 历史加载失败 `corrupt session log: seq gap in committed region at line N (expected X, got Y)` | **两个 dsh 实例共享同一数据目录并发写同一会话**（常见触发：3080 崩溃后用 3081 fallback 继续同一对话）→ 日志尾部同 seq 事件交叉；后端只自动修 torn frame、不修 seq gap | 先确认无进程在写该 `session.jsonl.zstd`（LastWriteTime 稳定 + 独占打开测试）→ 备份 → 逐帧解压按 seq 去重重建（保留首次出现，坏帧前字节原样保留）→ 重扫验证 seq 连续 → 刷新 GUI 即可加载；时间线分叉时尾部可能错乱，详见经验库 |
 
 ## 手动命令
 
