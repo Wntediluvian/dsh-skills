@@ -40,6 +40,7 @@ dsh 运维与故障排查的**快速入口**。通用版故障档案：本目录
 | 重启按钮触发后拉不起来 | 重启命令失败（如 powershell 包装）| 回退 `detached + windowsHide`；查 `%TEMP%/dsh-restart-*.log` |
 | 插件市场更新后功能丢失/报错 | 一键更新 = `pnpm add @latest` **重装整个包目录**，node_modules 手动补丁全被覆盖 | 更新后跑 `运维\插件补丁\reapply-patches.ps1` 重打补丁（幂等）；自持插件用 `file:`/`github:` 安装可永久免疫 |
 | 3080 启动失败 `Failed to load plugins` / `bundle script ... failed to load` | `pnpm install` 清空了不在 dependencies 里的 `@deepseek-ai/*` 官方 bundle | package.json dependencies 补 `@deepseek-ai/dsh-base` + `dsh-web-app`（^0.1.0-rc.7）→ `pnpm install --no-frozen-lockfile` 重装 → 跑 reapply-patches.ps1 |
+| 启动报 `keyed slot "settings.plugin.item" requires options.key`（具体插件名） | 该插件 client.js 用 `id` 注册 keyed slot（应为 `key`）| 改 `id:` → `key:`；已在 modlens/aqua/dsh-restart/dsh-backup 遇到，`reapply-patches.ps1` 已覆盖 modlens+aqua |
 
 ## 手动命令
 
