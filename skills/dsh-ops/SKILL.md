@@ -43,6 +43,7 @@ dsh 运维与故障排查的**快速入口**。通用版故障档案：本目录
 | 启动报 `keyed slot "settings.plugin.item" requires options.key`（具体插件名） | 该插件 client.js 用 `id` 注册 keyed slot（应为 `key`）| 改 `id:` → `key:`；已在 modlens/aqua/dsh-restart/dsh-backup 遇到，`reapply-patches.ps1` 已覆盖 modlens+aqua |
 | 启动报 `duplicate loader entry id: <名>` | **两个 bundle patch 插入同一个 loader entry id**（装"带依赖插件的插件"：父插件 patch 代挂子插件行 + 子插件独立安装时自己的 patch 也插同 id）| 从父插件 patch 移除子插件行（子插件行交给子插件自己的 patch）；`reapply-patches.ps1` 补丁 5 已覆盖 web-search-pro/browser 案例 |
 | 浏览器工具报内核缺失但 `browser_status` 显示 installed:true | **误报**：Playwright 缓存（`%LOCALAPPDATA%\ms-playwright`）实际不存在 | 改 `channel: chromium` → `msedge` 复用系统 Edge（省 400MB，已实测可用）；`reapply-patches.ps1` 补丁 6 已覆盖 |
+| 中文平台搜索不可用（知乎/B站/小红书/抖音）| 两套机制：①**Playwright storageState**（dsh-browser 配置 `storageStatePath`）②**opencli 浏览器扩展**（真实浏览器会话可绕 Playwright 反爬；抖音 Playwright 必被反爬——验证码/静默降级）| 知乎/B站：登录态文件配到 dsh-browser patch；小红书/抖音：装 opencli 扩展（浏览器开发者模式加载）+ `opencli <site> login`；B站需 Playwright fallback（选择器 `.bili-video-card`）|
 | 模型选择器锁死，只能选 `(modlens vision)` 变体 | **会话里有图片附件** → dsh 规则禁止切纯文本模型（不是 bug）| 开新会话即解锁；视觉插件二选一（modlens/vision-router 会抢路由）|
 | `dsh plugin update/add @latest` 后版本没变 | **pnpm 24h 发布冷静期**（minimumReleaseAge）拦了新版本 | 加 `--config.minimumReleaseAge=0` 绕过 |
 | 响应整体变慢 | ①会话过长（>1000 步/10 万 token 上下文）②vision-router stealth 接管 deepseek 路由 ③modlens 变体包装层 | 开新会话；`vision-router` 设 `stealth: false` 或卸载；默认模型用 `deepseek-official` 而非 `deepseek-modlens` |
